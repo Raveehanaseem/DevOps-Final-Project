@@ -41,18 +41,17 @@ pipeline {
         }
 
         stage('Kubernetes Deployment Stage') {
-            steps {
-                echo 'Deploying to Kubernetes...'
-                sh """
-                    kubectl apply -f deployment.yaml
-                    kubectl apply -f service.yaml
-                    kubectl rollout status deployment/webapp-deployment
-                    kubectl get pods
-                    kubectl get services
-                """
-            }
+    steps {
+        echo 'Deploying to Kubernetes...'
+        sh """
+            kubectl apply -f deployment.yaml --validate=false
+            kubectl apply -f service.yaml --validate=false
+            kubectl rollout status deployment/webapp-deployment
+            kubectl get pods
+            kubectl get services
+        """
         }
-
+    }
         stage('Prometheus/Grafana Stage') {
             steps {
                 echo 'Setting up monitoring...'
